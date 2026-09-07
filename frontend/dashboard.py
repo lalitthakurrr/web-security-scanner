@@ -56,20 +56,31 @@ st.markdown("""
 st.sidebar.markdown("# 🛡️ Security Scanner")
 st.sidebar.caption("Enterprise Web Vulnerability & Audit Engine")
 
-# Check API Health
+# Check API Health with Retry Logic & Detailed Diagnostics
 def check_api_connection():
-    try:
-        r = requests.get(f"{API_BASE_URL}/health", timeout=3)
-        return r.status_code == 200
-    except Exception:
-        return False
+    last_error = None
+    for attempt in range(2):
+        try:
+            r = requests.get(f"{API_BASE_URL}/health", timeout=8)
+            if r.status_code == 200:
+                return True, None
+        except Exception as e:
+            last_error = str(e)
+            if attempt == 0:
+                time.sleep(1)
+    return False, last_error
 
-api_online = check_api_connection()
+api_online, api_error = check_api_connection()
 if api_online:
     st.sidebar.success("Backend API: ONLINE 🟢")
 else:
     st.sidebar.error("Backend API: OFFLINE 🔴")
-    st.sidebar.info("Start FastAPI backend using:\n`uvicorn app.main:app --reload`")
+    if api_error:
+        with st.sidebar.expander("Diagnostics / Connection Details", expanded=False):
+            st.caption(f"Target: `{API_BASE_URL}/health`")
+            st.code(api_error, language="text")
+    if st.sidebar.button("🔄 Recheck Connection", use_container_width=True):
+        st.rerun()
 
 # Main Tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs([

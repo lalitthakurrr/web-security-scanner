@@ -104,7 +104,9 @@ class AsyncCrawler:
 
                 status_code = response.status_code
                 content_type = response.headers.get("content-type", "")
-                body = response.text
+                is_textual = any(t in content_type.lower() for t in ["html", "text", "json", "xml"])
+                # Limit memory footprint: only decode textual responses and cap to 256KB to fit within 512MB RAM
+                body = response.text[:256000] if is_textual else ""
                 headers = dict(response.headers)
                 
                 # Parse each Set-Cookie header individually to get per-cookie attributes

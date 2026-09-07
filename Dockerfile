@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 8000
 EXPOSE 8501
 
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 8000 & streamlit run frontend/dashboard.py --server.port ${PORT:-8501} --server.address 0.0.0.0"]
+CMD ["python", "run_services.py"]
