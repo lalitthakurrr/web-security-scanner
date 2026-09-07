@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  security-scanner:
+    build: .
+    container_name: web-security-scanner
+    ports:
+      - "8000:8000"  # FastAPI Backend API
+      - "8501:8501"  # Streamlit Dashboard UI
+    environment:
+      - DATABASE_URL=sqlite:///./scanner.db
+      - API_BASE_URL=http://localhost:8000/api
+    volumes:
+      - ./reports_output:/app/reports_output
+      - ./scanner.db:/app/scanner.db
+    restart: unless-stopped
