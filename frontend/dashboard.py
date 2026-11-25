@@ -11,10 +11,7 @@ st.set_page_config(page_title="Security Scanner", page_icon="◈", layout="wide"
 st.markdown("""
 <style>
     .stApp { background: #f6f7f5; color: #17251f; }
-    [data-testid="stSidebar"] { background: #172c24; }
-    [data-testid="stSidebar"] * { color: #eef5f0; }
-    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] { color: #b5c9bd; }
-    [data-testid="stSidebar"] [data-testid="stAlert"] * { color: #213a2a; }
+    [data-testid="stSidebar"] { background: #e8efea; border-right: 1px solid #dce5de; }
     .block-container { max-width: 1320px; padding-top: 2.4rem; padding-bottom: 4rem; }
     h1, h2, h3 { letter-spacing: -0.035em; color: #17251f; }
     h1 { font-size: 2.2rem !important; }
@@ -32,7 +29,7 @@ st.markdown("""
     .eyebrow { color: #3f7c59; text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 700; margin-bottom: .4rem; }
     .intro { color: #617169; font-size: 1rem; max-width: 700px; margin-bottom: 1.5rem; }
     .sidebar-title { font-size: 1.22rem; font-weight: 700; letter-spacing: -.03em; margin: .25rem 0; }
-    .sidebar-note { color: #b5c9bd !important; font-size: .85rem; line-height: 1.6; }
+    .sidebar-note { color: #52675a; font-size: .85rem; line-height: 1.6; }
     hr { border-color: #e1e8e2; }
 </style>
 """, unsafe_allow_html=True)
