@@ -90,6 +90,23 @@ def test_risk_engine_score():
     assert score == 74.0
 
 
+def test_score_deduplicates_rule_occurrences_using_highest_severity():
+    findings = [
+        Finding("cookie", "cookie A", "MEDIUM", "C", "D", "/a", "E", "R"),
+        Finding("cookie", "cookie B", "HIGH", "C", "D", "/b", "E", "R"),
+        *[Finding("header", "missing header", "MEDIUM", "C", "D", f"/{i}", "E", "R") for i in range(50)],
+    ]
+    assert RiskEngine.calculate_score(findings) == 77.0
+    assert RiskEngine.calculate_score(list(reversed(findings))) == 77.0
+    assert RiskEngine.count_by_severity(findings)["MEDIUM"] == 51
+
+
+def test_score_preserves_separate_rule_penalties_and_bounds():
+    assert RiskEngine.calculate_score([]) == 100.0
+    findings = [Finding(str(i), "issue", "CRITICAL", "C", "D", "/", "E", "R") for i in range(5)]
+    assert RiskEngine.calculate_score(findings) == 0.0
+
+
 def test_missing_x_frame_options_csp_frame_ancestors():
     """CSP with frame-ancestors should suppress X-Frame-Options finding; CSP without it should NOT."""
     rule = MissingXFrameOptionsRule()

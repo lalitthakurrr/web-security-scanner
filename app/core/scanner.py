@@ -78,6 +78,9 @@ class ScannerEngine:
             )
             crawled_pages = await crawler.crawl()
 
+            if not any(page.get("status_code") is not None for page in crawled_pages):
+                raise RuntimeError("No pages could be fetched; unable to calculate a security score.")
+
             # Record Crawled URLs in DB in a single bulk transaction
             crud.add_crawled_urls_bulk(self.db, self.scan_id, crawled_pages)
 
@@ -87,6 +90,8 @@ class ScannerEngine:
             visited_rule_keys = set()
 
             for page in crawled_pages:
+                if page.get("status_code") is None:
+                    continue
                 url = page["url"]
                 headers = page.get("headers", {})
                 body = page.get("body", "")

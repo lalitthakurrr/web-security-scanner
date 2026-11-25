@@ -13,7 +13,7 @@ A fully functional, asynchronous web application security audit engine, REST API
   - **TLS & Transport Encryption**: HTTPS enforcement & unencrypted traffic analysis.
   - **Information Disclosure**: Server header version leakage, sensitive HTML comment exposure (`TODO`, `password`, `key`), and sensitive path exposures (`.env`, `.git/HEAD`, `robots.txt`, `wp-config.php`, `backup.sql`).
   - **CORS Policies**: Insecure wildcard origins with credentials allowed.
-- **📊 CVSS-Inspired Risk Engine**: Dynamic scoring matrix generating an overall Security Health Score (0.0 to 100.0).
+- **📊 Risk Engine**: A heuristic Security Health Score (0.0 to 100.0). Each distinct rule deducts points once at its highest observed severity, even if it appears on multiple pages or cookies. The report retains every finding. This score reflects the checks performed, not a comprehensive security assessment or a CVSS score.
 - **⚡ FastAPI Backend REST API**: Clean RESTful endpoints for starting, monitoring, listing, deleting scans, and downloading executive PDF reports.
 - **🗄️ Database ORM**: SQLite database managed via SQLAlchemy models with clean relational mapping.
 - **📈 Streamlit Dashboard**: Ultra-modern, dark-themed interactive UI with real-time stats, scan controls, vulnerability expanders, and PDF generator download buttons.
